@@ -26,3 +26,14 @@ services:
         sync: false
       - key: MINIMAX_API_KEY
         sync: false
+
+  - type: web
+    name: companion-web
+    runtime: node
+    rootDir: frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://companion-api-d09g.onrender.com
