@@ -1,0 +1,4 @@
+# Local / full-fidelity dependencies: core + the neural embedder (bge-small via fastembed).
+# Deployed free-tier hosts install requirements.txt only and use the lightweight HashEmbedder.
+-r requirements.txt
+fastembed==0.9.0
