@@ -5,7 +5,6 @@ Endpoints:
   POST /chat                       user turn -> auto-answer or escalate to a human
   GET  /escalations                staff inbox (open items)
   POST /escalations/{id}/resolve   staff replies, closes the item
-  GET  /metrics                    simple counts for the dashboard
 
 A sliding-window per-IP rate limit protects the upstream LLM credits on a public demo.
 """
@@ -50,7 +49,14 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Companion API", version="0.1.0", lifespan=lifespan)
+app = FastAPI(
+    title="Companion API",
+    version="0.1.0",
+    lifespan=lifespan,
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[o.strip() for o in os.environ.get("FRONTEND_ORIGIN", "*").split(",") if o.strip()],
@@ -140,8 +146,3 @@ def resolve(escalation_id: int, body: ResolveIn) -> dict:
 @app.get("/conversations/{conversation_id}/messages")
 def conversation_messages(conversation_id: int) -> dict:
     return {"messages": store.conversation_messages(conversation_id)}
-
-
-@app.get("/metrics")
-def metrics() -> dict:
-    return store.counts()
