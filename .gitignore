@@ -1,0 +1,25 @@
+# secrets - never commit real values
+.env
+.env.*
+!.env.example
+*secret*
+*.key
+*.pem
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# node / next
+node_modules/
+.next/
+out/
+npm-debug.log*
+
+# os / editor
+.DS_Store
+.vscode/
+*.swp
