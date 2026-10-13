@@ -2,11 +2,11 @@
 
 Companion is a small, production-shaped **human-in-the-loop support assistant**. It answers
 routine questions from a knowledge base, and it reliably hands anything risky, clinical, or
-uncertain to a real person instead of guessing. It is built for a peer wellbeing programme,
+uncertain to a real person instead of guessing. I designed it for a peer wellbeing setting,
 where a wrong confident answer is worse than no answer.
 
-Built by Amos Mwangi as a working demonstration of the pattern, not a drop-in product.
-Live demo and walkthrough on request.
+I built this as a working demonstration of the pattern, not a drop-in product. The live demo
+and a full architecture walkthrough are available on request.
 
 ## What it does
 
@@ -23,11 +23,12 @@ Live demo and walkthrough on request.
 - **Resilient and cost-aware** — Claude Sonnet 5.5 as the primary model with an automatic
   fallback to a second provider if the primary is unavailable, plus per-IP rate limiting.
 
-## How it maps to the hiring brief
+## Why it works this way
 
-This mirrors the core ask of a human-in-the-loop AI platform role: take a chatbot from a
-prototype the team babysits to a system that knows when to act and when to call a human,
-with evaluation and monitoring around it, on a modern web stack.
+The hard part of a support bot is not answering, it is knowing when not to. I built Companion
+around that: it takes a chatbot from a prototype someone has to watch to a system that knows
+when to act and when to call a human, with the reasoning, monitoring, and a human fallback
+around it.
 
 ## Stack
 
