@@ -34,6 +34,7 @@ def test_routine_question_auto_answers():
         "Sometimes I think about suicide",
         "I have been self-harming again",
         "I don't want to be here anymore",
+        "I am in immediate danger and need urgent help",
     ],
 )
 def test_crisis_always_escalates_even_when_confident(msg):

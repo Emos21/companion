@@ -40,6 +40,9 @@ CRISIS_PATTERNS = [
     r"\boverdos",
     r"\bno reason to live\b",
     r"\bdon'?t want to be here anymore\b",
+    r"\b(?:in|at) immediate danger\b",
+    r"\bneed(?:s)? urgent help\b",
+    r"\b(?:mental health )?(?:crisis|emergency)\b",
 ]
 MEDICAL_PATTERNS = [
     r"\bdiagnos",

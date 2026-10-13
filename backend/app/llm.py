@@ -26,6 +26,7 @@ class LLMResult:
     provider: str      # "anthropic" | "minimax"
     model: str
     fell_back: bool
+    stop_reason: str | None = None
 
 
 def _text(message) -> str:
@@ -69,7 +70,13 @@ class LLMClient:
                     system=system,
                     messages=messages,
                 )
-                return LLMResult(_text(msg), "anthropic", self.anthropic_model, fell_back=False)
+                return LLMResult(
+                    _text(msg),
+                    "anthropic",
+                    self.anthropic_model,
+                    fell_back=False,
+                    stop_reason=getattr(msg, "stop_reason", None),
+                )
             except Exception as exc:  # out of credits, 429, 5xx, network - keep the service up
                 log.warning("Primary (Anthropic) failed: %s -- falling back to MiniMax", exc)
                 if self.fallback is None:
@@ -81,7 +88,13 @@ class LLMClient:
             system=system,
             messages=messages,
         )
-        return LLMResult(_text(msg), "minimax", self.minimax_model, fell_back=True)
+        return LLMResult(
+            _text(msg),
+            "minimax",
+            self.minimax_model,
+            fell_back=True,
+            stop_reason=getattr(msg, "stop_reason", None),
+        )
 
 
 _client: LLMClient | None = None

@@ -21,7 +21,7 @@ services:
       - key: EMBEDDER
         value: auto
       - key: FRONTEND_ORIGIN
-        value: "*"
+        value: https://companion-web-k5ui.onrender.com
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: MINIMAX_API_KEY

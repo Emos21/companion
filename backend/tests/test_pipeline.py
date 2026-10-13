@@ -64,3 +64,21 @@ def test_sources_are_returned():
         "How do I reschedule?", [], FakeRetriever(GOOD_HITS), FakeLLM("Open your dashboard."),
     )
     assert r["sources"] and r["sources"][0]["id"] == "reschedule"
+
+
+def test_truncated_model_output_is_not_shown_as_a_complete_answer():
+    truncated = LLMResult(
+        "Any fees are shown before you join, but this answer stops",
+        "anthropic",
+        "claude-sonnet-5-5",
+        fell_back=False,
+        stop_reason="max_tokens",
+    )
+    # Use a small provider-shaped fake so the pipeline sees the stop reason.
+    class TruncatedLLM:
+        def complete(self, system, messages, max_tokens=600):
+            return truncated
+
+    r = pipeline.answer("How do groups work?", [], FakeRetriever(GOOD_HITS), TruncatedLLM())
+    assert r["decision"].escalate
+    assert r["answer"] is None

@@ -66,10 +66,13 @@ def answer(user_message, history, retriever, llm=None, config=None, k: int = 4) 
 
     system = SYSTEM + "\n\nContext:\n" + _context(hits)
     messages = list(history) + [{"role": "user", "content": user_message}]
-    out = llm.complete(system, messages, max_tokens=400)
+    out = llm.complete(system, messages, max_tokens=600)
 
     raw = (out.text or "").strip()
-    answered = bool(raw) and SENTINEL not in raw.upper()
+    # Never show a response that the provider cut off at the token limit. A
+    # partial wellbeing instruction is worse than a clean human handoff.
+    truncated = getattr(out, "stop_reason", None) == "max_tokens"
+    answered = bool(raw) and SENTINEL not in raw.upper() and not truncated
     # Confidence: the model's own "can't answer" signal, else scaled by retrieval strength.
     confidence = 0.2 if not answered else max(0.0, min(0.95, 0.55 + 0.4 * retrieval_score))
 

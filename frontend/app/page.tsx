@@ -16,9 +16,21 @@ const SEV: Record<string, string> = {
 const SUGGESTIONS = [
   "Reschedule a session",
   "Get my deposit back",
-  "Sessions in Swahili",
+  "What languages are available?",
   "How do groups work?",
 ];
+
+function MessageText({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*|__[^_]+__)/g);
+  return (
+    <span className="whitespace-pre-wrap">
+      {parts.map((part, index) => {
+        const bold = part.match(/^\*\*(.+)\*\*$|^__(.+)__$/);
+        return bold ? <strong key={index}>{bold[1] || bold[2]}</strong> : part;
+      })}
+    </span>
+  );
+}
 
 function CompanionMark() {
   return (
@@ -160,7 +172,7 @@ export default function Home() {
                         : "rounded-[18px] rounded-bl-md bg-[#f0f5f2] px-4 py-3 text-[14px] leading-6 text-[#294740]"
                     }
                   >
-                    {m.text}
+                    <MessageText text={m.text} />
                   </div>
 
                   {m.meta && (
